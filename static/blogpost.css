@@ -1,0 +1,63 @@
+h2{
+    font-size: 5vw;
+    text-align: justify;
+}
+#desc{
+    border-left: 10px solid blue;
+    font-size: 1.5vw;
+    font-weight: 600;
+    margin-top: 1%;
+
+}
+#box1{
+    padding:30px;
+}
+p{
+    padding: 0 2vw;
+    text-align: justify;
+}
+#body{
+    border: none;
+}
+nav{
+    height: 10vh;
+}
+.container1{
+    height: 90vh;
+}
+.box{
+    display: block;
+
+    overflow-y: scroll;
+    
+}
+#comment{
+    font-size: 2vw;
+    text-align: center;
+    text-decoration: underline;
+    font-variant: small-caps;
+    font-weight: 700;
+}
+textarea{
+    border-radius: 5px;
+    border: 2px solid gray;
+    width:100%;
+    font-size: 1vw;
+}
+article{
+    background-color: rgb(247, 245, 245);
+    border: 1px solid gray;
+    padding: 1vh 1vw;
+    margin:1vh 0;
+}
+article p,article h6{
+    margin: 0;
+    
+}
+small,h6{
+    font-weight: bold;
+    text-transform: uppercase;
+}
+small{
+    margin-left: auto ;
+}

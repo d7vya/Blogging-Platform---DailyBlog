@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block dash %}active{% endblock dash %}
+{% block head %}
+
+<link rel="stylesheet" href="/static/homepage.css">
+
+{% endblock head %}
+{%block body%}
+{%if message%}
+<div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+    <strong>{{request.user}}!</strong> {{message}}.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{%endif%}
+<main class=" container1 p-4 ">
+    {% if blogs %}
+    <h2 class="text-center">Your Blogs</h2>
+    {% for blog in blogs %}
+    <article class="bg-dark text-light my-2 mx-auto">
+        <h3 class="title"><a href="/blogpost/{{blog.id}}">{{blog.title|slice:50}}....</a></h3>
+        <div class="d-flex justify-content-between">
+            <small>by {{blog.username|upper}}</small>
+            <small>Views:{{blog.view_count}}</small>
+            <small>comments:{{blog.commen_count}}</small>
+        </div>
+        <div class="d-flex justify-content-end my-2">
+            <button class="btn btn-danger mx-3"><a href="/blog?edit=change&blogid={{blog.id}}">change</a></button>
+            <button class="btn btn-danger mx-3"><a href="/blog?edit=delete&blogid={{blog.id}}">delete</a></button>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <small>Date and time {{blog.datentime}}</small>
+
+
+        </div>
+        <hr>
+        <p id="desc">{{blog.desc|slice:200}}</p>
+
+        <div class="d-flex justify-content-end">
+            <button class=" btn btn-info"><a href="/blogpost/{{blog.id}}">Read Blog</a></button>
+        </div>
+
+    </article>
+    {% endfor %}
+    {% endif %}
+    {% if comments %}
+    <h2 class="text-center">Your Comments</h2>
+    {% for comment in comments %}
+    <article class='bg-dark text-light'>
+        <h3 class="title"><a href="/blogpost/{{comment.blog.id}}">{{comment.blog.title|slice:50}}....</a></h3>
+
+        <hr>
+        <p id="desc">{{comment.content}}</p>
+        <small> {{comment.username|upper}}</small>
+        <p>date and time:{{comment.datentime}}</p>
+        <div class="d-flex justify-content-end">
+            <button class=" btn btn-info"><a href="/blogpost/{{comment.blog.id}}">Read Blog</a></button>
+        </div>
+
+    </article>
+    {% endfor %}
+    {% endif %}
+</main>
+{%endblock body%}

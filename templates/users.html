@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load mytags %}
+
+
+
+{% block users %}active{% endblock users %}
+{% block title %}Users{% endblock title %}
+{% block body %}
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">User_id</th>
+        <th scope="col">Username</th>
+        <th scope="col">Email</th>
+        <th scope="col">action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for user1 in users  %}
+        {% if user1.username != 'AnonymousUser' and not user1.is_staff %}
+      <tr>
+        <th scope="row">{{user1.id}}</th>
+        <td>{{user1.username}}</td>
+        <td>{{user1.email}}</td>
+        <td>{% if perms.auth.ban_user %}
+            <form action="/restriction/{{user1}}?page=users" method="post">
+                {%csrf_token%}
+                {% if user1|has_group:'ban_user' %}
+
+                <button type="submit" name='actions' value="unban" class="btn btn-success">Remove Ban</button>
+                {% else %}
+                <button type="submit" name="actions" value="ban" class="btn btn-danger">Ban User</button>
+                {% endif %}
+            {%endif%}    
+            </form></td>
+      </tr>{% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+
+
+
+
+{% endblock body %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{%block title%}DailyBlog{%endblock title%}
+{% block home %}active{% endblock home %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/addnew.css">
+<link rel="stylesheet" href="/static/homepage.css">
+{% endblock head %}
+{%block body%}
+<main class="container1">
+
+    <section class="box1 box " id="box1">
+        <h2>Popular</h2>
+        {% for blog in popular %}
+        <article>
+            <h3 class="title"><a href="/blogpost/{{blog.id}}">{{blog.title|slice:50}}....</a></h3>
+            <small>by {{blog.username|upper}}</small> <small>Views:{{blog.view_count}}</small>
+            <hr>
+            <p id="desc">{{blog.desc|slice:200}}</p>
+
+            <div class="d-flex justify-content-end">
+                <button class=" btn btn-info"><a href="/blogpost/{{blog.id}}">Read Blog</a></button>
+            </div>
+
+        </article>
+        {% endfor %}
+    </section>
+
+    <section class="box2 box" id="box2">
+        <h2>Latest</h2>
+        {% for blog in latest %}
+        <article>
+            <h3 style='font-size:20px'><a href="/blogpost/{{blog.id}}">{{blog.title|slice:50}}...</a></h3>
+            
+            <div class="d-flex justify-content-between">
+                <small>by {{blog.username|upper}}</small>
+                <small>Views:{{blog.view_count}}</small>
+                <small>comments:{{blog.commen_count}}</small>
+            </div>
+
+            <div >
+                <small><b>Date and time:</b> {{blog.datentime}}</small><br>
+                
+                <hr>
+                <p style='font-size:15px'>{{blog.desc|slice:100}}</p>
+            
+                <div class="d-flex justify-content-end">
+                    <button class=" btn btn-info"><a href="/blogpost/{{blog.id}}">Read Blog</a></button>
+                </div>
+           
+        </article>
+        {% endfor %}
+    </section>
+</main>
+{%endblock body%}

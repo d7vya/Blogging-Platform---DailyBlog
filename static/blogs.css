@@ -1,0 +1,45 @@
+form,
+label {
+    height: fit-content;
+    margin: 0;
+
+}
+
+select {
+    margin: 0;
+    width: fit-content;
+    height: max-content;
+    margin-left: 10px;
+
+
+}
+
+option {
+    font-size: small;
+    text-align: center;
+}
+
+#multiple {
+    border: 2px solid black;
+    padding: 0;
+}
+
+.option {
+    border-bottom: 1px solid black;
+    
+    font-size: 1.5vw;
+    font-weight: 500;
+    padding: 3px;
+    margin: 0;
+}
+
+.option.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+
+
+
+

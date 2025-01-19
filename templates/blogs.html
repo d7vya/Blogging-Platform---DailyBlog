@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% load mytags %}
+{%load static%}
+
+
+
+{% block blogs %}active{% endblock blogs %}
+{% block title %}Blogs{% endblock title %}
+{% block head %}
+<link rel="stylesheet" href="/static/homepage.css">
+
+<link rel="stylesheet" href="/static/feathericon-release/feathericon-release/css/feathericon.min.css">
+<link rel="stylesheet" href="/static/blogs.css">
+{% endblock head %}
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <p class="navbar-brand m-0">Filter Blogs</p>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent2"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="fe fe-filter"></span>
+    </button>
+
+
+    <form class="collapse navbar-collapse" id="navbarSupportedContent2" style="background-color: inherit;"
+        action="/blogs?filter=apply{%if search%}&search={{search}}{%endif%}" method="post">
+        {% csrf_token %}
+        <ul class="navbar-nav  d-flex justify-content-around w-100">
+            <li class="nav-item ">
+                <label class="nav-link ml-auto">Sort by
+                    <select name="sort" class='rounded'>
+
+                        <option value="-datentime" {% if sort_s == '-datentime' %}selected{% endif %}>New</option>
+                        <option value="datentime" {% if sort_s == 'datentime' %}selected{% endif %}>Oldest</option>
+                        <option value="-view_count" {% if sort_s == '-view_count' %}selected{% endif %}>Popular</option>
+                        <option value="view_count" {% if sort_s == 'view_count' %}selected{% endif %}>Least Popular
+                        </option>
+                    </select>
+                </label>
+            </li>
+            <li class="nav-item">
+                <label class="nav-link ">category
+                    <select name="category" class='rounded'>
+                        <option value="all" {% if cat_s == 'all' %}selected{% endif %}>all</option>
+                        {% for category in categorys %}
+                        <option value="{{category.name}}" {% if cat_s == category.name%}selected{% endif %}>
+                            {{category.name}}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </li>
+            <li class="nav-item dropdown">
+                <div>
+                <label class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Tags<small>(ctrl+click to select or deselect more than one tag)</small>
+                </label>
+                <select multiple class="dropdown-menu multi-select" id="multiple" name="tags"
+                    aria-labelledby="navbarDropdown">
+                    <option class="option" value="any" {% if "any" in tag_s %}selected{% endif %}>Any</option>
+                    {% for tag in tags %}
+                    <option class="option" value="{{ tag.name }}" {% if tag.name in tag_s %}selected{% endif %}>
+                        {{ tag.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const dropdownMenu = document.querySelector('.multi-select');
+                        const options = dropdownMenu.querySelectorAll('.option');
+
+                        options.forEach(option => {
+                            option.addEventListener('click', (event) => {
+                                // Prevent dropdown from closing
+                                event.stopPropagation();
+                        
+                        })
+                    });
+
+                    // Optional: Close dropdown when clicking outside of it
+                    document.addEventListener('click', (event) => {
+                        const isClickInside = dropdownMenu.contains(event.target) || event.target.id === 'navbarDropdown';
+                        if (!isClickInside) {
+                            dropdownMenu.classList.remove('show'); // Bootstrap class to hide dropdown
+                        }
+                    });
+                    });
+                </script>
+                
+            </div>
+            </li>
+            <li>
+                <button type="submit" class="btn btn-success">Apply</button>
+            </li>
+
+    </form>
+</nav>
+
+<main class="p-5" style="overflow-y:scroll ; height:80vh">
+
+    {% for blog in blogs %}
+    <article>
+        <div class="d-flex justify-content-between">
+            <h3 class="title"><a href="/blogpost/{{blog.id}}">{{blog.title|slice:50}}....</a></h3>
+            {% if perms.auth.ban_user %}
+            <form action="/restriction/{{blog.username}}" method="post">
+                {%csrf_token%}
+                {% if blog.username|has_group:'ban_user' %}
+
+                <button type="submit" name='actions' value="unban" class="btn btn-success">Remove Ban</button>
+                {% else %}
+                <button type="submit" name="actions" value="ban" class="btn btn-danger">Ban User</button>
+                {% endif %}
+            </form>
+            {% endif %}
+        </div>
+        <div class="d-flex justify-content-between">
+            <small>by {{blog.username|upper}}</small>
+            <small>Views:{{blog.view_count}}</small>
+            <small>comments:{{blog.commen_count}}</small>
+        </div>
+
+        <div class="d-flex justify-content-between m-auto">
+            <small>Date and time {{blog.datentime}}</small>
+
+
+        </div>
+        <hr>
+        <p id="desc">{{blog.desc|slice:200}}</p>
+
+        <div class="d-flex justify-content-end">
+            <button class=" btn btn-info"><a href="/blogpost/{{blog.id}}">Read Blog</a></button>
+        </div>
+
+    </article>
+    {% endfor %}
+</main>
+
+
+
+
+
+{% endblock body %}

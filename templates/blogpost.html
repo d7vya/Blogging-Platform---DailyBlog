@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load mytags %}
+{%block head%}
+<link rel="stylesheet" href="/static/addnew.css">
+<link rel="stylesheet" href="/static/blogpost.css">
+
+{%endblock head%}
+{%block body%}
+{%if message%}
+<div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+    <strong>{{request.user}}!</strong> {{message}}.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{%endif%}
+<main class="container1">
+
+    <section class="box" id="box1">
+        <h2>{{blog.title}}</h2>
+        <small>~{{blog.username}}</small>
+        <p id="desc">{{blog.desc}}</p>
+        <p id="body">{{blog.body}}</p>
+    </section>
+    <section class="box" id="box2">
+        <h2 id="comment">Comments section</h2>
+
+        <form action="/comment/{{blog.id}}" method="post">
+            {%csrf_token%}
+            <textarea type="text" name="comment" placeholder="Comment" maxlength="200" rows="2" required></textarea>
+            <button type="submit" name="submit" value="post" class="btn btn-secondary button">POST</button>
+
+        </form>
+        <hr>
+
+        {% for comment in comments %}
+        <article>
+            <h6>{{comment.username}}</h6>
+            <p>{{comment.content}}</p>
+            {% if user|obj_del:comment  %}
+            
+            <form action="/comment/{{blog.id}}?comment={{comment.id}}" method="post">
+                {%csrf_token%}
+                <button type="submit" name="submit" value="delete"
+                    style="border: none; text-decoration:underline; font-weight:500;background-color:inherit;">delete
+                    comment</button>
+            </form>
+            {%else%}
+                <p> </p>
+            {% endif %}
+        </article>
+        {% endfor %}
+
+
+    </section>
+</main>
+
+{%endblock body%}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block add %}active{% endblock add %}
+{% block title %}Create Blog{% endblock title %}
+{% block head %}
+<link rel="stylesheet" href="/static/addnew.css">
+{% endblock head %}
+
+
+{% block body%}
+{% if alert %}
+<div class="container1">
+    <h3>{{alert}}</h3>
+</div>
+{% else %}
+<form class=" container1" action="/addBlog{%if blog%}?edit={{blog.id}}{%endif%}" method="post">
+    {%csrf_token%}
+    <div id="box1" class='box'>
+        <input type="text" id="title" class="inputs title" name="title" maxlength="100"
+            placeholder='Enter your Blog title here' value='{{blog.title|default:''}}'>
+        <textarea name="desc" id="desc" class="inputs" rows="3" maxlength="300"
+            placeholder="Enter Blog's Description in here" required>{{blog.desc|default:''}}</textarea>
+        <textarea name="body" id="body" rows="6" class="inputs" placeholder='Blog Body here' required>{{blog.body|default:''}}</textarea>
+    </div>
+    <div id="box2" class='box'>
+        {% if blog %}
+         <small>choose category and tags again before submitting</small>
+         <p>before your category was: {{blog.category}} and tags were {% for tag in blog.tags.all  %}<span> {{tag}} </span>{% endfor %}</p>
+        {% endif %}
+        <div>
+            <label for="category">Category</label>
+            <select name="category" id="category" class="m-3" required>
+                {% if category %}
+                {% for cat in category %}
+                <option value="{{cat.name}}">{{cat.name}}</option>
+                {% endfor %}
+                {% endif %}
+
+            </select>
+        </div>
+        <label for="tags">Tags <small> (select one or more by using ctrl + click)</small></label>
+        <select multiple name="tag" id="tags" required>
+            {% if tags %}
+            {% for tag in tags %}
+            <option value="{{tag.name}}">{{tag.name}}</option>
+            {% endfor %}
+            {% endif %}
+        </select>
+        <div class="d-flex justify-content-center mt-4">
+            {% if blog %}
+            <button type="submit" name='button' value='{{blog.id}}' class='btn btn-success'>change</button>
+            {% else %}
+            <button type="submit" name='button' value='submit' class='btn btn-success'>submit</button>
+            {% endif %}
+        </div>
+    </div>
+
+</form>
+{% endif %}
+{% endblock body %}

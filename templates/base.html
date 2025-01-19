@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% block head %}{% endblock head %}
+    <style>
+      body {
+        background-color: rgb(231, 233, 233);
+      }
+  
+      .textcss {
+        color: black;
+        text-transform: uppercase;
+        background-color: rgb(216, 228, 228);
+      }
+  
+      .scrollable {
+        overflow: auto;
+      }
+    </style>
+  <title>{%block title%}{%endblock title%}</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light textcss">
+    <a class="navbar-brand" href="/">DailyBlog</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" style='background-color:inherit;'>
+      
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item {% block home %}{% endblock home %}">
+          <a class="nav-link" href="/">Home </a>
+        </li>
+        <li class="nav-item {% block blogs %}{% endblock blogs %}">
+          <a class="nav-link" href="/blogs">blogs</a>
+        </li>
+        <li class="nav-item dropdown {% block dash %}{% endblock dash %}">
+          <a class="nav-link dropdown-toggle" href="/dashboard" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Dashboard
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/dashboard">your blogs</a>
+            <a class="dropdown-item" href="/dashboard?open=comment">your comments</a>
+
+        </li>
+        <li class="nav-item {% block add %}{% endblock add %}">
+          <a class="nav-link " href="/addBlog">create</a>
+        </li>
+        {% if perms.auth.ban_user %}
+        <li class="nav-item {% block users %}{% endblock users %}">
+          <a class="nav-link " href="/userpage">Users</a>
+        </li>
+        
+        {% endif %}
+        
+      </ul>
+      {% if user.is_authenticated %}
+      <span class='mr-auto' style='color:red; font-wieght:800;'>welcome!  {{request.user}}</span>{% endif %}
+      <form class="form-inline my-2 my-lg-0" action='/blogs' method='post'>
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" name='search' type="search" placeholder="Search" aria-label="Search" required>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      {% if request.user.is_authenticated %}
+      <button class='btn btn-danger ml-2'><a href='/logout' style="color: black; text-decoration:none"><b>Logout</b></a></button>
+      {% else %}
+      <button class='btn btn-success ml-2'><a href='/login' style="color: white; text-decoration:none"><b>Login|Register</b></a></button>
+      {% endif %}
+      
+    </div>
+  </nav>
+  {%block body%}{%endblock body%}
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
