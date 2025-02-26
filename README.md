@@ -168,7 +168,12 @@ cd DailyBlog
 ### 3. Run the Development Server
 
 Once the database is set up and the superuser is created, start the development server:
+but before this you need to run the management file which contains permissions and groups . to initialize or we can say to create them run
 
+   ```bash
+   python manage.py permission_group
+   ```
+run the above command before running server
 ```bash
 python manage.py runserver
 ```
