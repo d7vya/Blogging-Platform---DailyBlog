@@ -143,7 +143,7 @@ Now that you have Python and `pip` installed, you can install Django, which is t
 If you haven't cloned the repository yet, you can do so by running:
 
 ```bash
-git clone https://github.com/d7vya/Blogging-Platform---DailyBlog.git
+git clone https://github.com/d7vya/DailyBlog.git
 cd DailyBlog
 ```
 
